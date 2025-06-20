@@ -2,6 +2,7 @@ import Lottie from "lottie-react";
 import React, { useContext } from "react";
 import registerLottie from "../assets/register.json";
 import { AuthContext } from "../context/AuthContext/AuthContext";
+import { NavLink } from "react-router";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
@@ -72,6 +73,7 @@ const Register = () => {
               />
 
               <button className="btn btn-neutral mt-4">Register</button>
+              <button><NavLink className='text-2xl font-bold text-red-400' to='/login'>Login</NavLink></button>
             </form>
           </div>
         </div>
