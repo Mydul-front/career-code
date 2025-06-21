@@ -3,6 +3,8 @@ import React, { useContext } from "react";
 import registerLottie from "../assets/register.json";
 import { AuthContext } from "../context/AuthContext/AuthContext";
 import { NavLink } from "react-router";
+import { motion } from "motion/react";
+
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
@@ -72,8 +74,21 @@ const Register = () => {
                 placeholder="Password"
               />
 
-              <button className="btn btn-neutral mt-4">Register</button>
-              <button><NavLink className='text-2xl font-bold text-red-400' to='/login'>Login</NavLink></button>
+              <motion.button
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className="btn btn-neutral mt-4"
+              >
+                Register
+              </motion.button>
+              <button>
+                <NavLink
+                  className="text-2xl font-bold text-red-400"
+                  to="/login"
+                >
+                  Login
+                </NavLink>
+              </button>
             </form>
           </div>
         </div>

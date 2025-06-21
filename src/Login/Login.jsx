@@ -1,19 +1,24 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext/AuthContext";
+import loginLotties from "../assets/login.json";
+import Lottie from "lottie-react";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);
+
   const handleLogin = (e) => {
     e.preventDefault();
-    const email = e.target.email;
-    const password = e.target.password;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
     console.log(email, password);
+
     loginUser(email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
+      .then((result) => {
+        console.log(result.user);
+        if (result.user) {
+          alert("Login is done");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -21,10 +26,12 @@ const Login = () => {
         console.log(errorMessage, errorCode);
       });
   };
+
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+          <Lottie animationData={loginLotties} style={{ width: "300px" }} />
           <div className="card-body">
             <form onSubmit={handleLogin} className="fieldset">
               <h1 className="text-2xl font-bold text-green-500">Login User</h1>
