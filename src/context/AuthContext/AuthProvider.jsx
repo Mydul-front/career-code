@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../../firebase/firebase.init";
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser]=useState(null);
+  const [user, setUser] = useState(null);
 
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  const loginUser=(email, password)=>{
-     setLoading(true);
-     return signInWithEmailAndPassword(auth, email, password);
-  }
+  const loginUser = (email, password) => {
+    setLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
-  
-  useEffect(()=>{
+  useEffect(() => {
     const unsubscriber = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         // User is signed in, see docs for a list of available properties
@@ -32,23 +36,23 @@ const AuthProvider = ({ children }) => {
         console.log("user nai");
       }
     });
-    return ()=>{
+    return () => {
       unsubscriber();
-    }
-  },[]);
+    };
+  }, []);
 
-  const logOut=()=>{
+  const logOut = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         setUser(null);
-        console.log('sign out successful');
+        console.log("sign out successful");
       })
       .catch((error) => {
         // An error happened.
         console.log(error.message);
       });
-  }
+  };
 
   const authInfo = {
     loading,
