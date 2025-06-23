@@ -1,4 +1,4 @@
-import { createBrowserRouter} from "react-router";
+import { createBrowserRouter } from "react-router";
 import RootLayout from "../Layout/RootLayout";
 import Home from "../pages/Home/Home";
 import Register from "../Register/Register";
@@ -7,6 +7,7 @@ import JobDetails from "../pages/Home/JobDetails";
 import PrivateRoute from "../routes/PrivateRoute";
 import JobApply from "../pages/Home/JobApply";
 import MyApplications from "../pages/Home/MyApplications";
+import AddJob from "../Shared/AddJob";
 
 const router = createBrowserRouter([
   {
@@ -25,11 +26,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobApply/:id",
-        element:<PrivateRoute><JobApply></JobApply></PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <JobApply></JobApply>
+          </PrivateRoute>
+        ),
       },
       {
-          path:'/myApplications',
-          element:<PrivateRoute><MyApplications></MyApplications></PrivateRoute>
+        path: "/myApplications",
+        element: (
+          <PrivateRoute>
+            <MyApplications></MyApplications>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/addJob",
+        element: (
+          <PrivateRoute>
+            <AddJob></AddJob>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/register",
