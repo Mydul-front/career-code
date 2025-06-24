@@ -1,13 +1,52 @@
 import React from "react";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const AddJob = () => {
-     const handleAddJob=(e)=>{
-          e.preventDefault();
-          const form=e.target;
-          const formData=new FormData(form);
-          const data=Object.fromEntries(formData.entries());
-          console.log(data);
-     }
+  const { user } = useAuth();
+  const handleAddJob = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+    const { min, max, currency, ...newJob } = data;
+    newJob.salaryRange = { min, max, currency };
+    // process requirements
+
+    const requirementsString = newJob.requirements;
+    const requirementsDirty = requirementsString.split(",");
+    const requirementsClean = requirementsDirty.map((req) => req.trim());
+    newJob.requirements = requirementsClean;
+    console.log(requirementsClean, requirementsDirty);
+
+    // responsibilities
+    newJob.responsibilities = newJob.responsibilities
+      .split(",")
+      .map((res) => res.trim());
+    newJob.status = "active";
+
+    console.log(newJob);
+    // save job to the database
+    axios
+      .post("http://localhost:5000/jobs", newJob)
+      .then((res) => {
+        console.log(res.data);
+        if(res.data.insertedId){
+          Swal.fire({
+            position:'top',
+            icon:'success',
+            title:'your post is successfully',
+            showConfirmButton:false,
+            timer:2000
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   return (
     <div className="container mx-auto m-6">
       <h2 className="text-5xl font-extrabold">Please add a job</h2>
@@ -108,7 +147,7 @@ const AddJob = () => {
         {/* Application DateLine*/}
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
           <legend className="fieldset-legend">Application DateLine</legend>
-          <input type="date" className="input" />
+          <input type="date" name="dateLine" className="input" />
         </fieldset>
         {/* job category*/}
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
@@ -135,18 +174,21 @@ const AddJob = () => {
               className="btn"
               type="radio"
               name="jobType"
+              value="On-site"
               aria-label="On-site"
             />
             <input
               className="btn"
               type="radio"
               name="jobType"
+              value="Remote"
               aria-label="Remote"
             />
             <input
               className="btn"
               type="radio"
               name="jobType"
+              value="Hybrid"
               aria-label="Hybrid"
             />
           </div>
@@ -175,6 +217,7 @@ const AddJob = () => {
               type="email"
               name="hr_email"
               className="input"
+              defaultValue={user.email}
               placeholder="hr email"
             />
           </fieldset>
