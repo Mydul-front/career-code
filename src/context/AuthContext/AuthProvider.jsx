@@ -32,7 +32,9 @@ const AuthProvider = ({ children }) => {
         if (currentUser?.email) {
           const userData = { email: currentUser.email };
           axios
-            .post("http://localhost:5000/jwt", userData,{withCredentials:true})
+            .post("http://localhost:5000/jwt", userData, {
+              withCredentials: true,
+            })
             .then((res) => {
               console.log("token after jwt", res.data);
               const token = res.data.token;
