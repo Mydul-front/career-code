@@ -1,11 +1,15 @@
 import axios from "axios";
 import React from "react";
 import { useLoaderData, useParams } from "react-router";
+import Swal from "sweetalert2";
 
 const ViewApplications = () => {
   const { job_id } = useParams();
-  const applications = useLoaderData();
+  const loaderData = useLoaderData();
+  console.log(loaderData);
+  const applications = loaderData|| [];
   console.log(applications);
+  console.log(Array.isArray(applications));
   const handleStatusChange = (e, app_id) => {
     console.log(e.target.value, app_id);
 
@@ -15,6 +19,15 @@ const ViewApplications = () => {
       })
       .then((res) => {
         console.log(res.data);
+        if (res.data.modifiedCount) {
+          Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "application status updated",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        }
       })
       .catch((error) => {
         console.log(error.message);
