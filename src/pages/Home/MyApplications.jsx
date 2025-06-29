@@ -2,10 +2,12 @@ import React, { Suspense } from "react";
 import ApplicationStats from "./ApplicationStats";
 import ApplicationList from "./ApplicationList";
 import useAuth from "../../hooks/useAuth";
-import { myApplicationsPromise } from "../../api/applicationsApi";
+import useApplicationApi from "../../api/jobsApi.js/useApplicationApi";
+
 
 const MyApplications = () => {
   const { user } = useAuth();
+  const {myApplicationsPromise}=useApplicationApi();
 
   console.log("user context token", user.accessToken);
   return (
@@ -13,7 +15,7 @@ const MyApplications = () => {
       <ApplicationStats></ApplicationStats>
       <Suspense fallback={"Loading your application..."}>
         <ApplicationList
-          myApplicationsPromise={myApplicationsPromise(user.email, user.accessToken)}
+          myApplicationsPromise={myApplicationsPromise(user.email)}
         ></ApplicationList>
       </Suspense>
     </div>
